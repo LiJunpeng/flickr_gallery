@@ -4,9 +4,46 @@ var flickrOptions = {
     api_key: "bea266a23cf578956d2a5051df11bcb5"
 };
 
-var recentPhotos = [];
-var photoCount = 100;
-var searchTag = 'mountain';
+// var recentPhotos = [];
+// var photoCount = 100;
+// var searchTag = 'mountain';
+
+function getRecentFlickrPhotosWithTag(searchTag, callback) {
+    var recentPhotos = [];
+    var photoCount = 100;
+    console.log(searchTag);
+
+    flickrApi.tokenOnly(flickrOptions, function (err, flickr) {
+        flickr.photos.search({tags: searchTag, page: 1, per_page: photoCount}, function (err, result) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            var photos = result.photos.photo;
+            var i = 0;
+            photos.forEach(function (photo) {
+                var title = photo.title;
+                var link = composePhotoUrl(photo.owner, photo.id);
+                var src = composePhotoSrc(photo);
+
+                populateTags(flickr, photo.id, function (tags) {
+                    recentPhotos.push({
+                        title: title,
+                        link: link,
+                        src: src,
+                        tags: tags,
+                        originalIndex: i++
+                    });
+                    if (recentPhotos.length == 100) {
+                        callback(recentPhotos);
+                    }
+                });
+            });
+        });
+    });
+
+}
+
 
 function getRecentFlickrPhotos(callback) {
     flickrApi.tokenOnly(flickrOptions, function (err, flickr) {
@@ -31,7 +68,7 @@ function getRecentFlickrPhotos(callback) {
                         originalIndex: i++
                     });
                     if (recentPhotos.length == 100) {
-                        callback();
+                        return;
                     }
                 });
             });
@@ -61,6 +98,6 @@ function populateTags(flickr, photoId, callback) {
 }
 
 module.exports = {
-    getRecentFlickrPhotos: getRecentFlickrPhotos,
-    recentPhotos: recentPhotos
+    getRecentFlickrPhotosWithTag: getRecentFlickrPhotosWithTag,
+    getRecentFlickrPhotos: getRecentFlickrPhotos
 };

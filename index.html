@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini-Flickr</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="/bower_components/angular-deckgrid/angular-deckgrid.js"></script>
+    <script src="/bower_components/me-lazyload/me-lazyload.js"></script>
+
+    <script src="/script/app.js"></script>
+
+    <link rel="stylesheet" href="style/app.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body ng-app="miniFlickr" ng-controller="PhotoCtrl">
+    <div class="container">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-xs-12 col-md-8">
+                    <h1>Flickr Gallery</h1>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="btn-group pin-button-group">
+                        <label ng-click="togglePinned('all')" class="btn btn-default pin-button"
+                               ng-class="{'btn-danger': pinFilter === 'all'}">All</label>
+                        <label ng-click="togglePinned('pinned')" class="btn btn-default pin-button"
+                               ng-class="{'btn-danger': pinFilter === 'pinned'}">Pinned</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="searchBox" class="col-md-4 pull-right">
+                <div class="input-group search-input-group">
+                    <input type="text" class="form-control" placeholder="cat"
+                           ng-model="photoTopic" />
+                <span class="input-group-addon search-addon">
+                    <label class="btn btn-default search-button" ng-click="searchTopic(photoTopic)">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </label>
+                </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="filterBox" class="col-md-4 pull-right">
+                <div class="input-group search-input-group">
+                    <input type="text" class="form-control" placeholder="Filter Tags"
+                           ng-model="tagsFilter" ng-change="searchTags()"/>
+                <span class="input-group-addon search-addon">
+                    <label class="btn btn-default search-button">
+                        <span class="glyphicon glyphicon-filter"></span>
+                    </label>
+                </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div ng-init="initialised=true;"></div>
+            <div ng-if="initialised" deckgrid class="deckgrid" source="filteredPhotos">
+                <div class="a-card" ng-mouseover="hoverPin = true" ng-mouseleave="hoverPin = false">
+                    <a ng-href="{{card.link}}" target="_blank">
+                        <img lazy-src="{{card.src}}" animate-visible="true" animate-speed="0.7s" >
+                    </a>
+                    <h3>{{card.title}}</h3>
+                    <div class="a-card-tags">
+                        Tags: {{card.tags}}
+                    </div>
+                    <div class="a-card-pin">
+                        <img src="/image/pushpin-64.png" class="a-card-pin-icon" ng-show="hoverPin || card.pinned"
+                             ng-click="mother.pin(card.originalIndex)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
