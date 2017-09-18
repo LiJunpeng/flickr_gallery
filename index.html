@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="style/app.css">
 
 </head>
-<body ng-app="miniFlickr" ng-controller="PhotoCtrl">
+<body ng-app="miniFlickr" ng-controller="PhotoCtrl" style="background:#ecf2f9">
     <div class="container">
         <div class="page-header">
             <div class="row">
@@ -72,7 +72,7 @@
                         Tags: {{card.tags}}
                     </div>
                     <div class="a-card-pin">
-                        <img src="/image/pushpin-64.png" class="a-card-pin-icon" ng-show="hoverPin || card.pinned"
+                        <img src="/image/starred.png" class="a-card-pin-icon" ng-show="hoverPin || card.pinned"
                              ng-click="mother.pin(card.originalIndex)">
                     </div>
                 </div>
