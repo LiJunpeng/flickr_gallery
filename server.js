@@ -18,5 +18,5 @@ var restRouter = require('./routes/rest');
 app.use('/', express.static(__dirname + '/'));
 app.use('/api/v1', restRouter);
 
-app.listen(3000);
+app.listen(3001);
 console.log("Server initialized");

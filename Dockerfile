@@ -10,8 +10,6 @@ ADD . /app
 
 RUN cd /app && npm install
 
-RUN bower install
-
 EXPOSE 3001
 
 CMD ["nodemon", "/app/server.js"]
